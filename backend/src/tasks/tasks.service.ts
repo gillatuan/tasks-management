@@ -3,8 +3,9 @@ import {
   GetTasksFilterDto,
   TaskDto,
   TaskStatus,
+  UpdateTaskDto,
 } from '@/tasks/dto/Task.dto';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 
 @Injectable()
@@ -15,8 +16,13 @@ export class TasksService {
     return this.tasks;
   }
 
-  getTaskById(id: string) {
-    return this.tasks.find(task => task.id === id)
+  getTaskById(id: string): TaskDto {
+    const checkExistingItem = this.tasks.find((task) => task.id === id);
+    if (!checkExistingItem) {
+      throw new NotFoundException();
+    }
+
+    return checkExistingItem;
   }
 
   getTasksFilter(filterDto: GetTasksFilterDto) {
@@ -54,5 +60,17 @@ export class TasksService {
     this.tasks.push(task);
 
     return task;
+  }
+
+  updateTaskStatus(id: string, updateTaskDto: UpdateTaskDto) {
+    const found = this.getTaskById(id);
+    found.status = updateTaskDto.status;
+
+    return found;
+  }
+
+  deleteTask(id: string): void {
+    const found = this.getTaskById(id);
+    this.tasks = this.tasks.filter((task) => task.id !== found.id);
   }
 }
