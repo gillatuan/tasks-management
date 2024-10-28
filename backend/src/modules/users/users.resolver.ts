@@ -11,12 +11,17 @@ import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
+  @Query(() => String)
+  async hello() {
+    return await 'world';
+  }
+  
   @Mutation(() => UserType)
   register(@Args('registerInput') registerInput: RegisterInput) {
     return this.usersService.register(registerInput);
   }
 
-  @Query(() => [UserType])
+ /*  @Query(() => [UserType])
   findAll() {
     return this.usersService.findAll();
   }
@@ -39,5 +44,5 @@ export class UsersResolver {
   @Mutation(() => UserType)
   removeUser(@Args('id', { type: () => Int }) id: number) {
     return this.usersService.remove(id);
-  }
+  } */
 }

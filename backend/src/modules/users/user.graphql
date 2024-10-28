@@ -1,0 +1,39 @@
+scalar Date
+
+type Query {
+  hello: String!
+}
+
+enum RoleEnum {
+  Admin
+  Member
+}
+
+type User {
+  _id: String!
+  id: String!
+  email: String!
+  password: String
+  providerId: String
+  phone: String!
+  address: String!
+  image: String!
+  role: RoleEnum
+  isActive: Boolean
+  codeId: String
+  codeExpired: Date
+}
+
+input RegisterInput {
+  id: String
+  email: String
+  password: String
+  phone: String
+  address: String
+  image: String
+  role: RoleEnum
+}
+
+type Mutation {
+  register(registerInput: RegisterInput!): User
+}
