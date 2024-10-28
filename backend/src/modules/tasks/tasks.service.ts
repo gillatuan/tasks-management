@@ -4,7 +4,7 @@ import {
   TaskDto,
   TaskStatus,
   UpdateTaskDto,
-} from '@/tasks/dto/Task.dto';
+} from '@/modules/tasks/dto/Task.dto';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 

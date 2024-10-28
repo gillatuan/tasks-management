@@ -3,8 +3,8 @@ import {
   GetTasksFilterDto,
   TaskDto,
   UpdateTaskDto,
-} from '@/tasks/dto/Task.dto';
-import { TasksService } from '@/tasks/tasks.service';
+} from '@/modules/tasks/dto/Task.dto';
+import { TasksService } from '@/modules/tasks/tasks.service';
 import {
   Body,
   Controller,
