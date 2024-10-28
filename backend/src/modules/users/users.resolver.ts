@@ -1,4 +1,8 @@
-import { RegisterInput, UserType } from '@/modules/users/dto/user.dto';
+import {
+  RegisterInput,
+  UpdateUserInput,
+  UserType,
+} from '@/modules/users/dto/user.dto';
 import { UsersService } from '@/modules/users/users.service';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
@@ -12,8 +16,8 @@ export class UsersResolver {
   }
 
   @Mutation(() => UserType)
-  register(@Args('registerInput') registerInput: RegisterInput) {
-    return this.usersService.register(registerInput);
+  register(@Args('registerUserInput') registerUserInput: RegisterInput) {
+    return this.usersService.register(registerUserInput);
   }
 
   @Query(() => [UserType])
@@ -31,14 +35,17 @@ export class UsersResolver {
     return this.usersService.remove(id);
   }
 
+  @Mutation(() => UserType)
+  updateUser(
+    @Args('id') id: string,
+    @Args('updateUserInput') updateUserInput: UpdateUserInput,
+  ) {
+    return this.usersService.update(id, updateUserInput);
+  }
+
   /*  
   @Query(() => [UserType])
   searchTerms(@Args('filterDto') filterDto: FilterDto) {
     return this.usersService.searchTerms(filterDto);
-  }
-
-  @Mutation(() => UserType)
-  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    return this.usersService.update(updateUserInput.id, updateUserInput);
   } */
 }

@@ -20,7 +20,7 @@ type User {
   codeExpired: Date
 }
 
-input RegisterInput {
+input RegisterUserInput {
   id: String
   email: String
   password: String
@@ -28,6 +28,13 @@ input RegisterInput {
   address: String
   image: String
   role: RoleEnum
+}
+input UpdateUserInput {
+  id: String
+  email: String
+  phone: String
+  address: String
+  image: String
 }
 
 type FilterDto {
@@ -37,11 +44,12 @@ type FilterDto {
 
 type Query {
   helloo: String!
-  findAll: [User]!
+  findAll: [User!]
   findOne(id: String): User!
 }
 
 type Mutation {
-  register(registerInput: RegisterInput!): User
+  register(registerUserInput: RegisterUserInput!): User
   removeUser(id: String): String
+  updateUser(id: String, updateUserInput: UpdateUserInput): String
 }

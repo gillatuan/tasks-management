@@ -5,8 +5,12 @@ import { isUUID } from 'class-validator';
 import { Like, Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import { CreateUserInput } from './dto/create-user.input';
-import { UpdateUserInput } from './dto/update-user.input';
-import { FilterDto, RegisterInput, RoleEnum } from './dto/user.dto';
+import {
+  FilterDto,
+  RegisterInput,
+  RoleEnum,
+  UpdateUserInput,
+} from './dto/user.dto';
 import { User } from './entities/user.entity';
 
 @Injectable()
@@ -68,8 +72,8 @@ export class UsersService {
     return await this.userRepository.findOneBy({ id });
   }
 
-  update(id: number, updateUserInput: UpdateUserInput) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserInput: UpdateUserInput) {
+    return await this.userRepository.update({ id }, { ...updateUserInput });
   }
 
   async remove(id: string) {
@@ -81,7 +85,7 @@ export class UsersService {
       if (!checkUserIsAdmin) {
         const idSlice = id.slice();
         this.userRepository.delete({ id });
-        return idSlice
+        return idSlice;
       }
 
       throw new BadRequestException('Ban khong co quyen xoa');

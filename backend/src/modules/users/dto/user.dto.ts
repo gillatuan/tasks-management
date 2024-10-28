@@ -1,5 +1,5 @@
 // user.dto.ts
-import { ArgsType, Field, InputType, ObjectType } from '@nestjs/graphql';
+import { ArgsType, Field, InputType, ObjectType, OmitType } from '@nestjs/graphql';
 import { IsEmail, IsEmpty, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
 
 export enum RoleEnum {
@@ -40,6 +40,10 @@ export class UserType {
 @ArgsType()
 export class RegisterInput {
   @Field()
+  @IsUUID()
+  id: string
+
+  @Field()
   @IsNotEmpty()
   @IsEmail({}, { message: 'Email ko dung dinh dang' })
   email: string;
@@ -63,6 +67,8 @@ export class RegisterInput {
   @Field({ defaultValue: RoleEnum.Member })
   @IsEmpty()
   role?: RoleEnum;
+}
+export class UpdateUserInput extends OmitType(RegisterInput, ['password']) {
 }
 
 @InputType()
