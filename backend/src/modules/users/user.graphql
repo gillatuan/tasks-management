@@ -1,9 +1,5 @@
 scalar Date
 
-type Query {
-  hello: String!
-}
-
 enum RoleEnum {
   Admin
   Member
@@ -34,6 +30,18 @@ input RegisterInput {
   role: RoleEnum
 }
 
+type FilterDto {
+  isActive: Boolean
+  s: String
+}
+
+type Query {
+  helloo: String!
+  findAll: [User]!
+  findOne(id: String): User!
+}
+
 type Mutation {
   register(registerInput: RegisterInput!): User
+  removeUser(id: String): String
 }

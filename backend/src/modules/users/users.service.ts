@@ -1,11 +1,12 @@
 import { setHashPassword } from '@/helpers/utils';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ILike, Like, Repository } from 'typeorm';
+import { isUUID } from 'class-validator';
+import { Like, Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
-import { FilterDto, RegisterInput } from './dto/user.dto';
+import { FilterDto, RegisterInput, RoleEnum } from './dto/user.dto';
 import { User } from './entities/user.entity';
 
 @Injectable()
@@ -41,6 +42,7 @@ export class UsersService {
       ...registerInput,
       id: uuid(),
       password: hashedPassword,
+      role: RoleEnum.Member,
     });
     return await this.userRepository.save(newUser);
   }
@@ -59,7 +61,7 @@ export class UsersService {
   }
 
   findAll() {
-    return `This action returns all users`;
+    return this.userRepository.find();
   }
 
   async findOne(id: string) {
@@ -70,8 +72,21 @@ export class UsersService {
     return `This action updates a #${id} user`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    if (isUUID(id)) {
+      const checkUserIsAdmin = await this.userRepository.findOneBy({
+        id,
+        role: RoleEnum.Admin,
+      });
+      if (!checkUserIsAdmin) {
+        const idSlice = id.slice();
+        this.userRepository.delete({ id });
+        return idSlice
+      }
+
+      throw new BadRequestException('Ban khong co quyen xoa');
+    }
+    throw new BadRequestException('Id ko dung dinh dang');
   }
 
   async searchTerms(filterDto: FilterDto) {
@@ -83,9 +98,11 @@ export class UsersService {
 
     if (s) {
       return await this.userRepository.find({
-        where: { email: {
-          $in: Like(`%${s}%`)
-        } as any },
+        where: {
+          email: {
+            $in: Like(`%${s}%`),
+          } as any,
+        },
       });
     }
 

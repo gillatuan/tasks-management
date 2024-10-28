@@ -17,8 +17,6 @@ import { UsersModule } from './modules/users/users.module';
       type: 'mongodb',
       url: 'mongodb://localhost:27017/school',
       synchronize: true,
-      useUnifiedTopology: true,
-      useNewUrlParser: true,
       entities: [join(__dirname, '**/**.entity{.ts,.js}')],
     }),
     /* ConfigModule.forRoot({ isGlobal: true }),

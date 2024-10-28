@@ -27,3 +27,37 @@ query detailLesson {
     endDate
   }
 }
+
+=======================
+User
+
+mutation {
+  register(registerInput: {
+    email: "tuan5@gmail.com",
+    password: "123456",
+    phone: "0977757900",
+    address: "123 Le Loi F3 Q.1",
+    image:"erhrehrh"
+  }) {
+    id
+    email
+    phone
+  }
+}Ø
+
+query ListUsers {
+  findAll {
+    id
+   	email
+    phone
+  }
+}
+
+query getUser {
+  findOne(id: "d9bdfde0-3137-4535-9ff9-d91aacb5cb14") {
+    email
+    phone
+    address
+    image
+  }
+}
