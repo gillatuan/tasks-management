@@ -37,23 +37,29 @@ export class UserType {
 @ArgsType()
 export class RegisterInput {
   @Field()
+  @IsNotEmpty()
   @IsEmail({}, { message: 'Email ko dung dinh dang' })
   email: string;
 
   @Field()
+  @IsNotEmpty()
   password: string;
 
   @Field()
+  @IsNotEmpty()
   phone: string;
 
   @Field()
+  @IsNotEmpty()
   address: string;
 
-  @Field({ nullable: true })
-  image: string;
+  @Field()
+  @IsNotEmpty()
+  image?: string;
 
   @Field({ defaultValue: RoleEnum.Member })
-  role: RoleEnum;
+  @IsNotEmpty()
+  role?: RoleEnum;
 }
 
 @InputType()
