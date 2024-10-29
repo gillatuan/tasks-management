@@ -32,6 +32,11 @@ export class UsersResolver {
     return await this.usersService.searchTerms(filterDto);
   }
 
+  @Query(() => UserType)
+  async findByEmail(@Args('email') email: string): Promise<User> {
+    return await this.usersService.findByEmail(email);
+  }
+
   @Mutation(() => User)
   async register(
     @Args('registerUserInput') registerUserInput: RegisterUserInput,

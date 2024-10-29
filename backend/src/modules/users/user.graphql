@@ -47,6 +47,7 @@ type Query {
   findOne(id: String): User!
   findAll: [User!]
   searchTerms(filterDto: FilterDto): [User!]
+  findByEmail(email: String): User!
 }
 
 type Mutation {

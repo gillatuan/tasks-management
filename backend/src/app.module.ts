@@ -1,9 +1,10 @@
+import { AuthModule } from '@/auth/auth.module';
+import { UsersModule } from '@/modules/users/users.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
-import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { UsersModule } from './modules/users/users.module';
       inject: [ConfigService], 
     }), */
     UsersModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
