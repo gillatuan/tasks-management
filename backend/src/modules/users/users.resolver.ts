@@ -1,3 +1,4 @@
+import { Public } from '@/helpers/setPubicPage';
 import {
   FilterDto,
   RegisterUserInput,
@@ -50,6 +51,7 @@ export class UsersResolver {
   }
 
   @Mutation(() => User)
+  @Public()
   async updateUser(
     @Args('id') id: string,
     @Args('updateUserInput') updateUserInput: UpdateUserInput,

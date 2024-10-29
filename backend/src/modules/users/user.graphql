@@ -32,6 +32,7 @@ input RegisterUserInput {
 input UpdateUserInput {
   id: String
   email: String
+  password: String
   phone: String
   address: String
   image: String

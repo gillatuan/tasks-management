@@ -1,5 +1,5 @@
 import { setHashPassword } from '@/helpers/utils';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { isUUID } from 'class-validator';
 import { MongoRepository } from 'typeorm';
@@ -69,7 +69,12 @@ export class UsersService {
   }
 
   async update(id: string, updateUserInput: UpdateUserInput) {
-    await this.userRepository.update({ id }, { ...updateUserInput });
+    const checkExistUser = this.userRepository.findOneBy({id})
+    if (!checkExistUser) {
+      throw new NotFoundException("Khong ton tai use nay")
+    }
+    const getHashPassword = await setHashPassword(updateUserInput.password)
+    await this.userRepository.update({ id }, { ...updateUserInput, password: getHashPassword });
 
     return 'Update user OK';
   }

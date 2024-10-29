@@ -1,7 +1,8 @@
 scalar Date
 
-type AuthPayload {
-  accessToken: String
+type JWTAccessToken {
+  accessToken: String!
+  refreshToken: String!
 }
 
 input LoginInput {
@@ -26,6 +27,5 @@ type Query {
 
 type Mutation {
   authRegister(registerUserInput: RegisterUserInput!): User
-  # login(loginInput: LoginInput): AuthPayload
-  login(email: String, password: String): AuthPayload
+  login(email: String!, password: String!): JWTAccessToken
 }

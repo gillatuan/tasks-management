@@ -1,5 +1,9 @@
 import { UsersService } from '@/modules/users/users.service';
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { AuthPayload, LoginInput } from './dto/auth.dto';
@@ -12,13 +16,18 @@ export class AuthService {
   ) {}
 
   async validateUser(loginInput: LoginInput): Promise<AuthPayload> | null {
-    const { email, password } = loginInput;
-    const user = await this.userService.findByEmail(email);
-    if (user && (await bcrypt.compare(password, user.password))) {
-      const { password, isActive, codeExpired, codeId, ...result } = user;
-      return result;
+    const user = await this.userService.findByEmail(loginInput.email);
+    if (!user) {
+      throw new NotFoundException('Khong co use nay');
     }
-    return null;
+
+    const isMatch = await bcrypt.compare(loginInput.password, user.password);
+    if (!isMatch) {
+      throw new BadRequestException('Mat khau ko chinh xac');
+    }
+
+    const { password, isActive, codeExpired, codeId, ...result } = user;
+    return result;
   }
 
   async createAccessToken(user: AuthPayload) {
@@ -30,6 +39,13 @@ export class AuthService {
 
   async createRefreshToken(user: any) {
     const payload = { email: user.email, sub: user.id };
-    return this.jwtService.sign(payload, { expiresIn: '7d' });
+    return await this.jwtService.sign(payload, { expiresIn: '7d' });
+  }
+
+  async login(user: any) {
+    const payload = { email: user.email, sub: user.id };
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
   }
 }

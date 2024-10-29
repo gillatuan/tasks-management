@@ -28,4 +28,5 @@ export class AuthPayload {
 @ObjectType()
 export class JWTAccessToken {
   accessToken: string
+  refreshToken: string
 }

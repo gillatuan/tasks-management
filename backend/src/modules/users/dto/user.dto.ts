@@ -54,7 +54,7 @@ export class RegisterUserInput extends OmitType(UserType, ['id']) {
   @IsNotEmpty()
   image: string;
 }
-export class UpdateUserInput extends OmitType(RegisterUserInput, ['password']) {
+export class UpdateUserInput extends RegisterUserInput {
   @Field()
   @IsUUID()
   id: string;
