@@ -71,13 +71,3 @@ export class FilterDto {
   @IsOptional()
   s: string;
 }
-
-@InputType()
-@ArgsType()
-export class LoginInput {
-  @Field()
-  email: string;
-
-  @Field()
-  password: string;
-}

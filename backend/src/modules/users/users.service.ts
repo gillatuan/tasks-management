@@ -52,15 +52,6 @@ export class UsersService {
     return await this.userRepository.save(newUser);
   }
 
-  /* async login(input: LoginInput): Promise<string> {
-    const user = await this.userRepository.findOne({ where: { email: input.email } });
-    if (!user || !(await bcrypt.compare(input.password, user.password))) {
-      throw new Error('Invalid credentials');
-    }
-    // Generate a JWT token
-    return jwt.sign({ userId: user.id }, 'your_secret_key');
-  } */
-
   create(createUserInput: CreateUserInput) {
     return 'This action adds a new user';
   }
@@ -112,6 +103,7 @@ export class UsersService {
         where: {
           email: { $regex: new RegExp(s, 'i') }, // Case-insensitive substring match
         },
+        
       });
     }
 

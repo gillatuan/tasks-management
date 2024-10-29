@@ -61,3 +61,41 @@ query getUser {
     image
   }
 }
+
+mutation RemoveUser {
+  removeUser(id: "9b926aef-2628-4fbf-a605-93ff409d7f5d") 
+}
+
+query SearchTerms {
+  searchTerms(filterDto: {
+    s: ""
+  }) {
+    id
+    email
+  }
+}
+
+mutation UpdateUser {
+  updateUser(id: "678c24aa-fcb3-429d-a479-ffe5c1fecce4", updateUserInput: {
+    id: "678c24aa-fcb3-429d-a479-ffe5c1fecce4"
+    email: "tuan2@gmail.com",
+    phone: "0977757911",
+    address: "123 Le Loi F3 Q.1",
+    image:"erhrehrh"
+  }) 
+}
+
+query FindByEmail {
+  findByEmail(email: "tuan1@gmail.com") {
+    id
+    phone
+    address
+    image
+  }
+}
+
+mutation Login {
+  login(loginInput: {email: "tuan1@gmail.com", password: "123456"}) {
+    accessToken
+  }
+}

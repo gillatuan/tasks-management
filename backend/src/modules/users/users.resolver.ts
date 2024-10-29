@@ -4,9 +4,9 @@ import {
   UpdateUserInput,
   UserType,
 } from '@/modules/users/dto/user.dto';
+import { User } from '@/modules/users/entities/user.entity';
 import { UsersService } from '@/modules/users/users.service';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { User } from './entities/user.entity';
 
 @Resolver(() => UserType)
 export class UsersResolver {

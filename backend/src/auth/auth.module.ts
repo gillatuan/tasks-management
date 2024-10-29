@@ -1,20 +1,30 @@
+import { AuthResolver } from '@/auth/auth.resolver';
 import { AuthService } from '@/auth/auth.service';
-import { JwtStrategy } from '@/auth/jwt.strategy';
 import { UsersModule } from '@/modules/users/users.module';
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from './passport/jwt.strategy';
+import { LocalStrategy } from './passport/local.strategy';
 
 @Module({
   imports: [
     UsersModule,
     PassportModule,
-    JwtModule.register({
-      secret: 'YOUR_SECRET_KEY', // Đặt secret key cho JWT
-      signOptions: { expiresIn: '1h' }, // Token hết hạn sau 1 giờ
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        global: true,
+        secret: configService.get<string>('JWT_SECRET'),
+        signOptions: {
+          expiresIn: configService.get<string>('JWT_ACCESS_TOKEN_EXPIRED'),
+        },
+      }),
+      inject: [ConfigService],
     }),
   ],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthResolver, AuthService, LocalStrategy, JwtStrategy],
   exports: [AuthService],
 })
 export class AuthModule {}
