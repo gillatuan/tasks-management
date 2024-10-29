@@ -37,15 +37,16 @@ input UpdateUserInput {
   image: String
 }
 
-type FilterDto {
+input FilterDto {
   isActive: Boolean
   s: String
 }
 
 type Query {
   helloo: String!
-  findAll: [User!]
   findOne(id: String): User!
+  findAll: [User!]
+  searchTerms(filterDto: FilterDto): [User!]
 }
 
 type Mutation {

@@ -1,10 +1,12 @@
 import {
-  RegisterInput,
+  FilterDto,
+  RegisterUserInput,
   UpdateUserInput,
   UserType,
 } from '@/modules/users/dto/user.dto';
 import { UsersService } from '@/modules/users/users.service';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { User } from './entities/user.entity';
 
 @Resolver(() => UserType)
 export class UsersResolver {
@@ -15,37 +17,38 @@ export class UsersResolver {
     return await 'world';
   }
 
-  @Mutation(() => UserType)
-  register(@Args('registerUserInput') registerUserInput: RegisterInput) {
-    return this.usersService.register(registerUserInput);
-  }
-
-  @Query(() => [UserType])
-  findAll() {
-    return this.usersService.findAll();
-  }
-
   @Query(() => UserType)
-  findOne(@Args('id') id: string) {
-    return this.usersService.findOne(id);
+  async findOne(@Args('id') id: string): Promise<User> {
+    return await this.usersService.findOne(id);
+  }
+
+  @Query(() => [User])
+  async findAll(): Promise<User[]> {
+    return await this.usersService.findAll();
+  }
+
+  @Query(() => [User])
+  async searchTerms(@Args('filterDto') filterDto: FilterDto): Promise<User[]> {
+    return await this.usersService.searchTerms(filterDto);
+  }
+
+  @Mutation(() => User)
+  async register(
+    @Args('registerUserInput') registerUserInput: RegisterUserInput,
+  ): Promise<User> {
+    return await this.usersService.register(registerUserInput);
   }
 
   @Mutation(() => String)
-  removeUser(@Args('id') id: string) {
-    return this.usersService.remove(id);
+  async removeUser(@Args('id') id: string): Promise<String> {
+    return await this.usersService.remove(id);
   }
 
-  @Mutation(() => UserType)
-  updateUser(
+  @Mutation(() => User)
+  async updateUser(
     @Args('id') id: string,
     @Args('updateUserInput') updateUserInput: UpdateUserInput,
   ) {
-    return this.usersService.update(id, updateUserInput);
+    return await this.usersService.update(id, updateUserInput);
   }
-
-  /*  
-  @Query(() => [UserType])
-  searchTerms(@Args('filterDto') filterDto: FilterDto) {
-    return this.usersService.searchTerms(filterDto);
-  } */
 }

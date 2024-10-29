@@ -2,12 +2,12 @@ import { setHashPassword } from '@/helpers/utils';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { isUUID } from 'class-validator';
-import { Like, Repository } from 'typeorm';
+import { MongoRepository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import { CreateUserInput } from './dto/create-user.input';
 import {
   FilterDto,
-  RegisterInput,
+  RegisterUserInput,
   RoleEnum,
   UpdateUserInput,
 } from './dto/user.dto';
@@ -17,7 +17,7 @@ import { User } from './entities/user.entity';
 export class UsersService {
   constructor(
     @InjectRepository(User)
-    private userRepository: Repository<User>,
+    private readonly userRepository: MongoRepository<User>,
   ) {}
 
   async isEmailExist(email: string) {
@@ -30,8 +30,8 @@ export class UsersService {
     return false;
   }
 
-  async register(registerInput: RegisterInput): Promise<User> {
-    const { email } = registerInput;
+  async register(registerUserInput: RegisterUserInput): Promise<User> {
+    const { email } = registerUserInput;
 
     // check exist email
     const isExist = await this.isEmailExist(email);
@@ -41,11 +41,12 @@ export class UsersService {
       );
     }
 
-    const hashedPassword = await setHashPassword(registerInput.password);
+    const hashedPassword = await setHashPassword(registerUserInput.password);
     const newUser = this.userRepository.create({
-      ...registerInput,
+      ...registerUserInput,
       id: uuid(),
       password: hashedPassword,
+      isActive: false,
       role: RoleEnum.Member,
     });
     return await this.userRepository.save(newUser);
@@ -73,7 +74,9 @@ export class UsersService {
   }
 
   async update(id: string, updateUserInput: UpdateUserInput) {
-    return await this.userRepository.update({ id }, { ...updateUserInput });
+    await this.userRepository.update({ id }, { ...updateUserInput });
+
+    return 'Update user OK';
   }
 
   async remove(id: string) {
@@ -103,9 +106,7 @@ export class UsersService {
     if (s) {
       return await this.userRepository.find({
         where: {
-          email: {
-            $in: Like(`%${s}%`),
-          } as any,
+          email: { $regex: new RegExp(s, 'i') }, // Case-insensitive substring match
         },
       });
     }
