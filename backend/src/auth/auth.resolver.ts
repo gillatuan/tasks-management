@@ -3,31 +3,36 @@ import { AuthService } from '@/auth/auth.service';
 import { Public } from '@/helpers/setPubicPage';
 import { User } from '@/modules/users/entities/user.entity';
 import { UsersService } from '@/modules/users/users.service';
-import { Res, UnauthorizedException } from '@nestjs/common';
+import { Res, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { AuthRegisterInput, JWTAccessToken } from './dto/auth.dto';
+import { AuthRegisterInput, JWTAccessToken, LoginInput } from './dto/auth.dto';
+import { LocalAuthGuard } from "./guards/local-auth.guard";
 
 @Resolver()
 export class AuthResolver {
   constructor(
     private readonly authService: AuthService,
-    private readonly userService: UsersService,
   ) {}
 
-  @Mutation(() => String)
+  @Mutation(() => User)
   @Public()
-  async authRegister(
+  authRegister(
     @Args('authRegisterInput') authRegisterInput: AuthRegisterInput,
   ): Promise<User> {
-    return await this.authService.register(authRegisterInput);
+    return this.authService.register(authRegisterInput);
   }
 
-  @Query(() => String)
-  getProfile() {
-    return 'getProfile';
+  @Mutation(() => JWTAccessToken)
+  @Public()
+  @UseGuards(LocalAuthGuard)
+  login(
+    @Args('loginInput') loginInput: LoginInput,
+    @Res({ passthrough: true }) res,
+  ): Promise<JWTAccessToken> {
+    return this.authService.login(loginInput)
   }
 
-  @Mutation(() => String)
+  /* @Mutation(() => String)
   @Public()
   async login(
     @Args('email') email: string,
@@ -45,7 +50,7 @@ export class AuthResolver {
     const refreshToken = await this.authService.createRefreshToken(user);
 
     return { accessToken: token.accessToken, refreshToken };
-  }
+  } */
 
   /* @UseGuards(AuthGuard('jwt-refresh'))
   async refresh(
