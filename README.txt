@@ -37,13 +37,13 @@ mutation {
     password: "123456",
     phone: "0977757900",
     address: "123 Le Loi F3 Q.1",
-    image:"erhrehrh"
+    avatar:"erhrehrh"
   }) {
     id
     email
     phone
   }
-}Ø
+}
 
 query ListUsers {
   findAll {
@@ -58,7 +58,7 @@ query getUser {
     email
     phone
     address
-    image
+    avatar
   }
 }
 
@@ -81,7 +81,7 @@ mutation UpdateUser {
     email: "tuan2@gmail.com",
     phone: "0977757911",
     address: "123 Le Loi F3 Q.1",
-    image:"erhrehrh"
+    avatar:"erhrehrh"
   }) 
 }
 
@@ -90,7 +90,7 @@ query FindByEmail {
     id
     phone
     address
-    image
+    avatar
   }
 }
 

@@ -34,7 +34,7 @@ export class UserType {
   address: string;
 
   @Field()
-  image: string;
+  avatar: string;
 
   @Field({ defaultValue: RoleEnum.Member })
   role?: RoleEnum;
@@ -45,14 +45,16 @@ export class UserType {
 
 @InputType()
 @ArgsType()
-export class RegisterUserInput extends OmitType(UserType, ['id']) {
+export class RegisterUserInput extends OmitType(UserType, ['id', 'avatar']) {
   @Field()
   @IsNotEmpty()
   password: string;
 
   @Field()
-  @IsNotEmpty()
-  image: string;
+  avatar?: string;
+
+  @Field()
+  role?: RoleEnum.Member;
 }
 export class UpdateUserInput extends RegisterUserInput {
   @Field()

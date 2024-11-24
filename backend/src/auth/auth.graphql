@@ -10,13 +10,13 @@ input LoginInput {
   password: String
 }
 
-input RegisterUserInput {
+input AuthRegisterInput {
   id: String
-  email: String
-  password: String
-  phone: String
-  address: String
-  image: String
+  email: String!
+  password: String!
+  phone: String!
+  address: String!
+  avatar: String
   role: RoleEnum
 }
 
@@ -26,6 +26,6 @@ type Query {
 }
 
 type Mutation {
-  authRegister(registerUserInput: RegisterUserInput!): User
+  authRegister(authRegisterInput: AuthRegisterInput!): User
   login(email: String!, password: String!): JWTAccessToken
 }
