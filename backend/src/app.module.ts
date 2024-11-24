@@ -2,7 +2,7 @@ import { AuthModule } from '@/auth/auth.module';
 import { UsersModule } from '@/modules/users/users.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -17,12 +17,17 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
       playground: true,
       // autoSchemaFile: true,
     }),
-    TypeOrmModule.forRoot({
-      type: 'mongodb',
-      url: 'mongodb://localhost:27017/school',
-      synchronize: true,
-      entities: [join(__dirname, '**/**.entity{.ts,.js}')],
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mongodb',
+        url: configService.get('MONGODB_URI'),
+        entities: [join(__dirname, '**/**.entity{.ts,.js}')],
+        synchronize: true,
+      }),
+      inject: [ConfigService],
     }),
+    
     /* ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],

@@ -1,16 +1,16 @@
+import { AuthRegisterInput } from '@/auth/dto/auth.dto';
 import { setHashPassword } from '@/helpers/utils';
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { isUUID } from 'class-validator';
 import { MongoRepository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import { CreateUserInput } from './dto/create-user.input';
-import {
-  FilterDto,
-  RegisterUserInput,
-  RoleEnum,
-  UpdateUserInput,
-} from './dto/user.dto';
+import { FilterDto, RoleEnum, UpdateUserInput } from './dto/user.dto';
 import { User } from './entities/user.entity';
 
 @Injectable()
@@ -30,8 +30,8 @@ export class UsersService {
     return false;
   }
 
-  async register(registerUserInput: RegisterUserInput): Promise<User> {
-    const { email } = registerUserInput;
+  async register(authRegisterInput: AuthRegisterInput): Promise<User> {
+    const { email } = authRegisterInput;
 
     // check exist email
     const isExist = await this.isEmailExist(email);
@@ -41,9 +41,9 @@ export class UsersService {
       );
     }
 
-    const hashedPassword = await setHashPassword(registerUserInput.password);
+    const hashedPassword = await setHashPassword(authRegisterInput.password);
     const newUser = this.userRepository.create({
-      ...registerUserInput,
+      ...authRegisterInput,
       id: uuid(),
       password: hashedPassword,
       isActive: false,
@@ -69,12 +69,15 @@ export class UsersService {
   }
 
   async update(id: string, updateUserInput: UpdateUserInput) {
-    const checkExistUser = this.userRepository.findOneBy({id})
+    const checkExistUser = this.userRepository.findOneBy({ id });
     if (!checkExistUser) {
-      throw new NotFoundException("Khong ton tai use nay")
+      throw new NotFoundException('Khong ton tai use nay');
     }
-    const getHashPassword = await setHashPassword(updateUserInput.password)
-    await this.userRepository.update({ id }, { ...updateUserInput, password: getHashPassword });
+    const getHashPassword = await setHashPassword(updateUserInput.password);
+    await this.userRepository.update(
+      { id },
+      { ...updateUserInput, password: getHashPassword },
+    );
 
     return 'Update user OK';
   }
@@ -108,7 +111,6 @@ export class UsersService {
         where: {
           email: { $regex: new RegExp(s, 'i') }, // Case-insensitive substring match
         },
-        
       });
     }
 

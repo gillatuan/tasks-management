@@ -6,7 +6,8 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
-import { AuthPayload, LoginInput } from './dto/auth.dto';
+import { AuthPayload, AuthRegisterInput, LoginInput } from './dto/auth.dto';
+import { User } from "@/modules/users/entities/user.entity";
 
 @Injectable()
 export class AuthService {
@@ -14,6 +15,10 @@ export class AuthService {
     private readonly userService: UsersService,
     private readonly jwtService: JwtService,
   ) {}
+
+  async register(authRegisterInput:AuthRegisterInput): Promise<User> {
+    return this.userService.register(authRegisterInput)
+  }
 
   async validateUser(loginInput: LoginInput): Promise<AuthPayload> | null {
     const user = await this.userService.findByEmail(loginInput.email);

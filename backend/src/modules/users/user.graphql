@@ -13,7 +13,7 @@ type User {
   providerId: String
   phone: String!
   address: String!
-  image: String!
+  avatar: String!
   role: RoleEnum
   isActive: Boolean
   codeId: String
@@ -22,11 +22,11 @@ type User {
 
 input RegisterUserInput {
   id: String
-  email: String
-  password: String
-  phone: String
-  address: String
-  image: String
+  email: String!
+  password: String!
+  phone: String!
+  address: String!
+  avatar: String
   role: RoleEnum
 }
 input UpdateUserInput {
@@ -35,7 +35,7 @@ input UpdateUserInput {
   password: String
   phone: String
   address: String
-  image: String
+  avatar: String
 }
 
 input FilterDto {

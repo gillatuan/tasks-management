@@ -1,12 +1,11 @@
 // auth.resolver.ts
 import { AuthService } from '@/auth/auth.service';
 import { Public } from '@/helpers/setPubicPage';
-import { RegisterUserInput } from '@/modules/users/dto/user.dto';
 import { User } from '@/modules/users/entities/user.entity';
 import { UsersService } from '@/modules/users/users.service';
-import { Res, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { Res, UnauthorizedException } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { JWTAccessToken } from './dto/auth.dto';
+import { AuthRegisterInput, JWTAccessToken } from './dto/auth.dto';
 
 @Resolver()
 export class AuthResolver {
@@ -16,10 +15,11 @@ export class AuthResolver {
   ) {}
 
   @Mutation(() => String)
+  @Public()
   async authRegister(
-    @Args('registerUserInput') registerUserInput: RegisterUserInput,
+    @Args('authRegisterInput') authRegisterInput: AuthRegisterInput,
   ): Promise<User> {
-    return await this.userService.register(registerUserInput);
+    return await this.authService.register(authRegisterInput);
   }
 
   @Query(() => String)

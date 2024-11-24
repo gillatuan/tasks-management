@@ -8,9 +8,8 @@
       "type": "node",
       "request": "launch",
       "name": "Tasks Debug",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "yarn",
       "runtimeArgs": [
-        "run",
         "start:debug",
         "--",
         "--inspect-brk"
@@ -18,7 +17,7 @@
       "console": "integratedTerminal",
       "restart": true,
       "autoAttachChildProcesses": true,
-      "cwd": "${workspaceFolder}/../tasks-management/backend",
+      "cwd": "${workspaceFolder}/../task-management/backend",
       "sourceMapPathOverrides": {
         "meteor://💻app/*": "${workspaceFolder}/*",
         "webpack:///./~/*": "${workspaceFolder}/node_modules/*",
