@@ -27,5 +27,5 @@ type Query {
 
 type Mutation {
   authRegister(authRegisterInput: AuthRegisterInput!): User
-  login(email: String!, password: String!): JWTAccessToken
+  login(loginInput: LoginInput): JWTAccessToken
 }

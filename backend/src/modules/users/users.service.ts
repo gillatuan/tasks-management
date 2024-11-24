@@ -52,6 +52,13 @@ export class UsersService {
     return await this.userRepository.save(newUser);
   }
 
+  updateUserToken = async (refreshToken: string, _id: string) => {
+    return await this.userRepository.updateOne(
+      { _id },
+      { refreshToken }
+    )
+  }
+
   create(createUserInput: CreateUserInput) {
     return 'This action adds a new user';
   }

@@ -50,7 +50,14 @@ export class AuthPayload {
 }
 
 @ObjectType()
+export class UserPayload {
+  id: string;
+  email: string;
+  role: RoleEnum;
+}
+
+@ObjectType()
 export class JWTAccessToken {
   accessToken: string;
-  refreshToken: string;
+  user: UserPayload
 }
