@@ -1,10 +1,16 @@
-import { Column, Entity, ObjectIdColumn, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ObjectId,
+  ObjectIdColumn,
+  PrimaryColumn,
+} from 'typeorm';
 import { RoleEnum } from '../dto/user.dto';
 
-@Entity()
+@Entity({ name: 'users' })
 export class User {
   @ObjectIdColumn()
-  _id: string;
+  _id: ObjectId;
 
   @PrimaryColumn()
   id: string;
@@ -25,7 +31,7 @@ export class User {
   address: string;
 
   @Column()
-  image: string;
+  avatar: string;
 
   @Column({ default: RoleEnum.Member })
   role: RoleEnum;
@@ -38,4 +44,37 @@ export class User {
 
   @Column()
   codeExpired: Date;
+
+  @Column()
+  refreshToken: string;
+
+  @Column()
+  createdBy: {
+    _id: ObjectId;
+    email: string;
+  };
+
+  @Column()
+  updatedBy: {
+    _id: ObjectId;
+    email: string;
+  };
+
+  @Column()
+  deletedBy: {
+    _id: ObjectId;
+    email: string;
+  };
+
+  @Column()
+  createdAt: Date;
+
+  @Column()
+  updatedAt: Date;
+
+  @Column()
+  isDeleted: boolean;
+
+  @Column()
+  deletedAt: Date;
 }
