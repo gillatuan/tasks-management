@@ -22,7 +22,6 @@
   },
   "dependencies": {
     "@apollo/server": "4.11.0",
-    "@fastify/cookie": "^11.0.1",
     "@nestjs/apollo": "12.2.1",
     "@nestjs/common": "10.4.6",
     "@nestjs/config": "3.3.0",
@@ -42,7 +41,6 @@
     "class-transformer": "0.5.1",
     "class-validator": "0.14.1",
     "cookie-parser": "1.4.7",
-    "fastify": "5.0.0",
     "graphql": "16.9.0",
     "graphql-tools": "9.0.2",
     "mongodb": "6.10.0",
