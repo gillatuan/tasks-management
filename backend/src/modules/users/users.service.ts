@@ -9,7 +9,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { isUUID } from 'class-validator';
 import { MongoRepository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
-import { CreateUserInput } from './dto/create-user.input';
 import { FilterDto, RoleEnum, UpdateUserInput } from './dto/user.dto';
 import { User } from './entities/user.entity';
 
@@ -55,9 +54,9 @@ export class UsersService {
   updateUserToken = async (refreshToken: string, id: string) => {
     return await this.userRepository.updateOne(
       { id },
-      { refreshToken }
-    )
-  }
+      { $set: { refreshToken } },
+    );
+  };
 
   findAll() {
     return this.userRepository.find();

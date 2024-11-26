@@ -1,8 +1,18 @@
 scalar Date
 
+enum RoleEnum {
+  Member,
+  Admin,
+}
+
+type UserPayload {
+  id: String!
+  email: String!
+  role: RoleEnum!
+}
 type JWTAccessToken {
-  accessToken: String!
-  refreshToken: String!
+  accessToken: String
+  user: UserPayload
 }
 
 input LoginInput {

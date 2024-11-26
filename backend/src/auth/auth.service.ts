@@ -46,13 +46,10 @@ export class AuthService {
     return await this.jwtService.sign(payload);
   }
 
-  async createRefreshToken(payload: UserPayload, id: string, res: Response) {
-    const refreshToken = await this.jwtService.sign(payload, {
+  async createRefreshToken(payload: UserPayload, res: Response) {
+    const refreshToken = this.jwtService.sign(payload, {
       expiresIn: '7d',
     });
-
-    //update user with refresh token
-    this.userService.updateUserToken(refreshToken, id);
 
     //set refreshToken as cookies
     res.cookie('refreshToken', refreshToken, {
@@ -60,7 +57,8 @@ export class AuthService {
       maxAge: ms(this.configService.get<string>('JWT_REFRESH_EXPIRED')),
     });
 
-    return refreshToken
+    //update user with refresh token
+    this.userService.updateUserToken(refreshToken, payload.id);
   }
 
   async login(user: AuthPayload, res: Response): Promise<JWTAccessToken> {
@@ -71,7 +69,7 @@ export class AuthService {
       email: user.email,
       role: user.role,
     };
-    const refreshToken = await this.createRefreshToken(user, user.id, res);
+    this.createRefreshToken(payload, res);
     const accessToken = await this.createAccessToken(payload);
 
     return {

@@ -4,13 +4,12 @@ import {
   AuthPayload,
   AuthRegisterInput,
   JWTAccessToken,
-  LoginInput,
 } from '@/auth/dto/auth.dto';
 import { LocalAuthGuard } from '@/auth/guards/local-auth.guard';
 import { Public } from '@/helpers/setPubicPage';
 import { User } from '@/modules/users/entities/user.entity';
 import { Res, UseGuards } from '@nestjs/common';
-import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Context, GqlContextType, Mutation, Resolver } from '@nestjs/graphql';
 import { Response } from 'express';
 
 @Resolver()
@@ -28,10 +27,7 @@ export class AuthResolver {
   @Mutation(() => JWTAccessToken)
   @Public()
   @UseGuards(LocalAuthGuard)
-  login(
-    @Args('loginInput') loginInput: LoginInput,
-    @Res({ passthrough: true }) res,
-  ): Promise<JWTAccessToken> {
+  login(@Context('res') res): Promise<JWTAccessToken> {
     const userPayload = res.req.user as AuthPayload;
     return this.authService.login(userPayload, res);
   }

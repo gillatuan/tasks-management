@@ -59,5 +59,5 @@ export class UserPayload {
 @ObjectType()
 export class JWTAccessToken {
   accessToken: string;
-  user: UserPayload
+  user: UserPayload;
 }

@@ -4,7 +4,7 @@ import { NestFactory, Reflector } from '@nestjs/core';
 import { JwtAuthGuard } from "./auth/guards/jwt-auth.guard";
 import { TransformInterceptor } from "@/core/transform.interceptor";
 import { ConfigService } from "@nestjs/config";
-import * as cookieParser from "cookie-parser";
+import cookieParser from "cookie-parser";
 
 
 async function bootstrap() {
@@ -13,7 +13,7 @@ async function bootstrap() {
   
   const reflector = app.get(Reflector);
   app.useGlobalGuards(new JwtAuthGuard(reflector));
-  app.useGlobalInterceptors(new TransformInterceptor(reflector));
+  // app.useGlobalInterceptors(new TransformInterceptor(reflector));
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -22,7 +22,7 @@ async function bootstrap() {
     }),
   );
   
-  app.use(cookieParser.default());
+  app.use(cookieParser());
 
   //config cors
   app.enableCors(
