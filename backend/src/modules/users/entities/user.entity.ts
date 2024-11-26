@@ -1,19 +1,11 @@
-import {
-  Column,
-  Entity,
-  ObjectId,
-  ObjectIdColumn,
-  PrimaryColumn,
-} from 'typeorm';
+import { BaseEntity } from '@/modules/base.entity';
+import { Column, Entity, ObjectId, ObjectIdColumn } from 'typeorm';
 import { RoleEnum } from '../dto/user.dto';
 
 @Entity({ name: 'users' })
-export class User {
+export class User extends BaseEntity {
   @ObjectIdColumn()
   _id: ObjectId;
-
-  @PrimaryColumn()
-  id: string;
 
   @Column()
   email: string;
@@ -47,34 +39,4 @@ export class User {
 
   @Column()
   refreshToken: string;
-
-  @Column()
-  createdBy: {
-    _id: ObjectId;
-    email: string;
-  };
-
-  @Column()
-  updatedBy: {
-    _id: ObjectId;
-    email: string;
-  };
-
-  @Column()
-  deletedBy: {
-    _id: ObjectId;
-    email: string;
-  };
-
-  @Column()
-  createdAt: Date;
-
-  @Column()
-  updatedAt: Date;
-
-  @Column()
-  isDeleted: boolean;
-
-  @Column()
-  deletedAt: Date;
 }

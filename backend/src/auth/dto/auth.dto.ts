@@ -1,6 +1,6 @@
 import { RoleEnum } from '@/modules/users/dto/user.dto';
 import { ArgsType, Field, InputType, ObjectType } from '@nestjs/graphql';
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
 
 @InputType()
 @ArgsType()
@@ -40,24 +40,49 @@ export class LoginInput {
 
 @ObjectType()
 export class AuthPayload {
+  @Field()
   id: string;
+
+  @Field()
   email: string;
+
+  @Field()
+  @IsOptional()
   providerId?: string;
+
+  @Field()
   phone: string;
+
+  @Field()
   address: string;
-  avatar: string;
-  role: RoleEnum;
+
+  @Field()
+  @IsOptional()
+  avatar?: string;
+
+  @Field()
+  @IsOptional()
+  role?: RoleEnum;
 }
 
 @ObjectType()
 export class UserPayload {
+  @Field()
   id: string;
+
+  @Field()
   email: string;
-  role: RoleEnum;
+
+  @Field()
+  @IsOptional()
+  role?: RoleEnum;
 }
 
 @ObjectType()
 export class JWTAccessToken {
+  @Field()
   accessToken: string;
+
+  @Field()
   user: UserPayload;
 }

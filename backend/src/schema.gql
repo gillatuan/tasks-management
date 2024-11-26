@@ -1,0 +1,56 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input AuthRegisterInput {
+  avatar: String!
+  role: String!
+}
+
+input FilterDto {
+  isActive: Boolean
+  s: String
+}
+
+type JWTAccessToken {
+  accessToken: String!
+  user: UserPayload!
+}
+
+type Mutation {
+  authRegister(authRegisterInput: AuthRegisterInput!): UserType!
+  login: JWTAccessToken!
+  register(registerUserInput: RegisterUserInput!): UserType!
+  removeUser(id: String!): String!
+  updateUser(id: String!, password: String!): String!
+}
+
+type Query {
+  findAll: [UserType!]!
+  findByEmail(email: String!): UserType!
+  findOne(id: String!): UserType!
+  helloo: String!
+  searchTerms(filterDto: FilterDto!): [UserType!]!
+}
+
+input RegisterUserInput {
+  avatar: String!
+  password: String!
+  role: String!
+}
+
+type UserPayload {
+  email: String!
+  id: String!
+  role: String!
+}
+
+type UserType {
+  address: String!
+  avatar: String!
+  email: String!
+  id: String!
+  isActive: Boolean!
+  phone: String!
+  role: String!
+}

@@ -14,9 +14,10 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       // typePaths: ['./**/*.graphql'],
-      playground: true,
-      context: ({ req, res }) => ({ req, res }),
+      // playground: true,
+      // context: ({ req, res }) => ({ req, res }),
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      sortSchema: true, 
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
