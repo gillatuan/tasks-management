@@ -7,7 +7,8 @@ import {
 } from '@/auth/dto/auth.dto';
 import { LocalAuthGuard } from '@/auth/guards/local-auth.guard';
 import { Public } from '@/helpers/setPubicPage';
-import { User } from '@/modules/users/entities/user.entity';
+import { UserType } from "@/modules/users/dto/user.dto";
+import { User } from "@/modules/users/entities/user.entity";
 import { Res, UseGuards } from '@nestjs/common';
 import { Args, Context, GqlContextType, Mutation, Resolver } from '@nestjs/graphql';
 import { Response } from 'express';
@@ -16,7 +17,7 @@ import { Response } from 'express';
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
-  @Mutation(() => User)
+  @Mutation(() => UserType)
   @Public()
   authRegister(
     @Args('authRegisterInput') authRegisterInput: AuthRegisterInput,

@@ -70,7 +70,7 @@ export class UsersService {
     return await this.userRepository.findOneBy({ email });
   }
 
-  async update(id: string, updateUserInput: UpdateUserInput) {
+  async updateUser(id: string, updateUserInput: UpdateUserInput) {
     const checkExistUser = this.userRepository.findOneBy({ id });
     if (!checkExistUser) {
       throw new NotFoundException('Khong ton tai use nay');

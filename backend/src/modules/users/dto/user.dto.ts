@@ -37,6 +37,7 @@ export class UserType {
   avatar: string;
 
   @Field({ defaultValue: RoleEnum.Member })
+  @IsOptional()
   role?: RoleEnum;
 
   @Field({ defaultValue: false })
@@ -56,10 +57,13 @@ export class RegisterUserInput extends OmitType(UserType, ['id', 'avatar']) {
   @Field()
   role?: RoleEnum.Member;
 }
-export class UpdateUserInput extends RegisterUserInput {
+
+@InputType()
+@ArgsType()
+export class UpdateUserInput extends OmitType(UserType, ['role']) {
   @Field()
-  @IsUUID()
-  id: string;
+  @IsNotEmpty()
+  password: string;
 }
 
 @InputType()

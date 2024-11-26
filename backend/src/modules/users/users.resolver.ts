@@ -1,4 +1,3 @@
-import { Public } from '@/helpers/setPubicPage';
 import {
   FilterDto,
   RegisterUserInput,
@@ -23,12 +22,12 @@ export class UsersResolver {
     return await this.usersService.findOne(id);
   }
 
-  @Query(() => [User])
+  @Query(() => [UserType])
   async findAll(): Promise<User[]> {
     return await this.usersService.findAll();
   }
 
-  @Query(() => [User])
+  @Query(() => [UserType])
   async searchTerms(@Args('filterDto') filterDto: FilterDto): Promise<User[]> {
     return await this.usersService.searchTerms(filterDto);
   }
@@ -38,7 +37,7 @@ export class UsersResolver {
     return await this.usersService.findByEmail(email);
   }
 
-  @Mutation(() => User)
+  @Mutation(() => UserType)
   async register(
     @Args('registerUserInput') registerUserInput: RegisterUserInput,
   ): Promise<User> {
@@ -50,12 +49,11 @@ export class UsersResolver {
     return await this.usersService.remove(id);
   }
 
-  @Mutation(() => User)
-  @Public()
+  @Mutation(() => String)
   async updateUser(
     @Args('id') id: string,
-    @Args('updateUserInput') updateUserInput: UpdateUserInput,
-  ) {
-    return await this.usersService.update(id, updateUserInput);
+    @Args() updateUserInput: UpdateUserInput,
+  ): Promise<string> {
+    return await this.usersService.updateUser(id, updateUserInput);
   }
 }
