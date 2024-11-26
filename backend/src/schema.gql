@@ -7,6 +7,11 @@ input AuthRegisterInput {
   role: String!
 }
 
+input CreateRoleInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
 input FilterDto {
   isActive: Boolean
   s: String
@@ -17,11 +22,19 @@ type JWTAccessToken {
   user: UserPayload!
 }
 
+input LoginInput {
+  email: String!
+  password: String!
+}
+
 type Mutation {
   authRegister(authRegisterInput: AuthRegisterInput!): UserType!
-  login: JWTAccessToken!
+  createRole(createRoleInput: CreateRoleInput!): Role!
+  login(loginInput: LoginInput!): JWTAccessToken!
   register(registerUserInput: RegisterUserInput!): UserType!
+  removeRole(id: Int!): Role!
   removeUser(id: String!): String!
+  updateRole(updateRoleInput: UpdateRoleInput!): Role!
   updateUser(id: String!, password: String!): String!
 }
 
@@ -30,6 +43,8 @@ type Query {
   findByEmail(email: String!): UserType!
   findOne(id: String!): UserType!
   helloo: String!
+  role(id: Int!): Role!
+  roles: [Role!]!
   searchTerms(filterDto: FilterDto!): [UserType!]!
 }
 
@@ -37,6 +52,17 @@ input RegisterUserInput {
   avatar: String!
   password: String!
   role: String!
+}
+
+type Role {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateRoleInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
 }
 
 type UserPayload {

@@ -8,14 +8,15 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { RolesModule } from './modules/roles/roles.module';
 
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       // typePaths: ['./**/*.graphql'],
-      // playground: true,
-      // context: ({ req, res }) => ({ req, res }),
+      playground: true,
+      context: ({ req, res }) => ({ req, res }),
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true, 
     }),
@@ -41,6 +42,7 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
     ConfigModule.forRoot({ isGlobal: true }),
     UsersModule,
     AuthModule,
+    RolesModule,
   ],
   providers: [
     {
