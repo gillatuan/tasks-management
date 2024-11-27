@@ -8,7 +8,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
-import { RolesModule } from './modules/roles/roles.module';
+import { PermissionsModule } from './modules/permissions/permissions.module';
 
 @Module({
   imports: [
@@ -42,7 +42,7 @@ import { RolesModule } from './modules/roles/roles.module';
     ConfigModule.forRoot({ isGlobal: true }),
     UsersModule,
     AuthModule,
-    RolesModule,
+    PermissionsModule,
   ],
   providers: [
     {

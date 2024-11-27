@@ -7,9 +7,11 @@ input AuthRegisterInput {
   role: String!
 }
 
-input CreateRoleInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+input CreatePermissionInput {
+  apiPath: String!
+  method: String!
+  module: String!
+  name: String!
 }
 
 input FilterDto {
@@ -29,13 +31,18 @@ input LoginInput {
 
 type Mutation {
   authRegister(authRegisterInput: AuthRegisterInput!): UserType!
-  createRole(createRoleInput: CreateRoleInput!): Role!
+  createPermission(createPermissionInput: CreatePermissionInput!): PermissionType!
   login(loginInput: LoginInput!): JWTAccessToken!
   register(registerUserInput: RegisterUserInput!): UserType!
-  removeRole(id: Int!): Role!
   removeUser(id: String!): String!
-  updateRole(updateRoleInput: UpdateRoleInput!): Role!
   updateUser(id: String!, password: String!): String!
+}
+
+type PermissionType {
+  apiPath: String!
+  method: String!
+  module: String!
+  name: String!
 }
 
 type Query {
@@ -43,8 +50,6 @@ type Query {
   findByEmail(email: String!): UserType!
   findOne(id: String!): UserType!
   helloo: String!
-  role(id: Int!): Role!
-  roles: [Role!]!
   searchTerms(filterDto: FilterDto!): [UserType!]!
 }
 
@@ -52,17 +57,6 @@ input RegisterUserInput {
   avatar: String!
   password: String!
   role: String!
-}
-
-type Role {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input UpdateRoleInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
 }
 
 type UserPayload {
