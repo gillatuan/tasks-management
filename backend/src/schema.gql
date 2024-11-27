@@ -3,8 +3,10 @@
 # ------------------------------------------------------
 
 input AuthRegisterInput {
-  avatar: String!
-  role: String!
+  address: String!
+  email: String!
+  password: String!
+  phone: String!
 }
 
 input CreatePermissionInput {
@@ -31,7 +33,7 @@ input LoginInput {
 
 type Mutation {
   authRegister(authRegisterInput: AuthRegisterInput!): UserType!
-  createPermission(createPermissionInput: CreatePermissionInput!): PermissionType!
+  create(createPermissionInput: CreatePermissionInput!): PermissionType!
   login(loginInput: LoginInput!): JWTAccessToken!
   register(registerUserInput: RegisterUserInput!): UserType!
   removeUser(id: String!): String!
@@ -71,6 +73,7 @@ type UserType {
   email: String!
   id: String!
   isActive: Boolean!
+  password: String!
   phone: String!
   role: String!
 }

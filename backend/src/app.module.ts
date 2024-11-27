@@ -3,11 +3,9 @@ import { UsersModule } from '@/modules/users/users.module';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
-import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { PermissionsModule } from './modules/permissions/permissions.module';
 
 @Module({
@@ -18,7 +16,7 @@ import { PermissionsModule } from './modules/permissions/permissions.module';
       playground: true,
       context: ({ req, res }) => ({ req, res }),
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      sortSchema: true, 
+      sortSchema: true,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -30,7 +28,7 @@ import { PermissionsModule } from './modules/permissions/permissions.module';
       }),
       inject: [ConfigService],
     }),
-    
+
     /* ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -43,12 +41,6 @@ import { PermissionsModule } from './modules/permissions/permissions.module';
     UsersModule,
     AuthModule,
     PermissionsModule,
-  ],
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
-    },
   ],
 })
 export class AppModule {}

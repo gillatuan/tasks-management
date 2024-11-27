@@ -3,26 +3,23 @@ import { ArgsType, Field, InputType, ObjectType } from '@nestjs/graphql';
 import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
 
 @InputType()
-@ArgsType()
 export class AuthRegisterInput {
+  @Field()
   @IsNotEmpty({ message: 'Email ko de trong' })
   @IsEmail({}, { message: 'Email ko dung dinh dang' })
   email: string;
 
+  @Field()
   @IsNotEmpty({ message: 'Password ko de trong' })
   password: string;
 
+  @Field()
   @IsNotEmpty({ message: 'Phone ko de trong' })
   phone: string;
 
+  @Field()
   @IsNotEmpty({ message: 'Address ko de trong' })
   address: string;
-
-  @Field()
-  avatar?: string;
-
-  @Field()
-  role?: RoleEnum;
 }
 
 @InputType()

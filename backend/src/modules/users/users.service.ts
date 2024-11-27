@@ -6,11 +6,12 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { isUUID } from 'class-validator';
+import { IsUUID, isUUID } from 'class-validator';
 import { MongoRepository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import { FilterDto, RoleEnum, UpdateUserInput } from './dto/user.dto';
 import { User } from './entities/user.entity';
+import mongoose from "mongoose";
 
 @Injectable()
 export class UsersService {
@@ -63,7 +64,14 @@ export class UsersService {
   }
 
   async findOne(id: string) {
-    return await this.userRepository.findOneBy({ id });
+    if (!isUUID(id)) {
+      return `not found user`;
+    }
+
+    return await this.userRepository.findOneBy({
+      where: { id },
+      select: { password: false },
+    })
   }
 
   async findByEmail(email: string) {

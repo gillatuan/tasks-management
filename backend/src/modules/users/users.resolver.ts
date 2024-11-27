@@ -1,3 +1,4 @@
+import { Public } from "@/helpers/setPubicPage";
 import {
   FilterDto,
   RegisterUserInput,
@@ -13,12 +14,13 @@ export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
   @Query(() => String)
+  @Public()
   async helloo() {
     return await 'world';
   }
 
   @Query(() => UserType)
-  async findOne(@Args('id') id: string): Promise<User> {
+  async findOne(@Args('id') id: string): Promise<User | string> {
     return await this.usersService.findOne(id);
   }
 

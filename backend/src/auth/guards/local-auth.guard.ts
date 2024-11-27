@@ -7,8 +7,7 @@ export class LocalAuthGuard extends AuthGuard('local') {
   // Override this method so it can be used in graphql
   getRequest(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context);
-    const req = ctx.getContext().req;
-
+    
     const gqlReq = ctx.getContext().req;
     if (gqlReq) {
       const { loginInput } = ctx.getArgs();

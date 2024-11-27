@@ -6,6 +6,7 @@ import {
   ObjectType,
   OmitType,
 } from '@nestjs/graphql';
+import { Prop } from "@nestjs/mongoose";
 import { IsEmail, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
 
 export enum RoleEnum {
@@ -19,6 +20,10 @@ export class UserType {
   @Field()
   @IsUUID()
   id: string;
+
+  @Field()
+  @IsOptional()
+  password?: string;
 
   @Field()
   @IsNotEmpty({ message: 'Email ko de trong' })
@@ -46,7 +51,7 @@ export class UserType {
 
 @InputType()
 @ArgsType()
-export class RegisterUserInput extends OmitType(UserType, ['id', 'avatar']) {
+export class RegisterUserInput extends OmitType(UserType, ['avatar']) {
   @Field()
   @IsNotEmpty()
   password: string;
