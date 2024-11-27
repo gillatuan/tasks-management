@@ -4,33 +4,45 @@ import { Permission } from './entities/permission.entity';
 import { CreatePermissionInput } from './dto/create-permission.input';
 import { UpdatePermissionInput } from './dto/update-permission.input';
 import { PermissionType } from "./dto/permission.dto";
+import { ResponseMessage, User } from "@/decorator/customize";
+import { IUser } from "../users/users";
+import { Get } from "@nestjs/common";
 
 @Resolver(() => Permission)
 export class PermissionsResolver {
   constructor(private readonly permissionsService: PermissionsService) {}
 
   @Mutation(() => PermissionType)
-  createPermission(@Args('createPermissionInput') createPermissionInput: CreatePermissionInput) {
-    return this.permissionsService.create(createPermissionInput);
+  @ResponseMessage("Create a new permission")
+  create(@Args('createPermissionInput') createPermissionInput: CreatePermissionInput, @User() user: IUser) {
+    return this.permissionsService.create(createPermissionInput, user);
   }
 
-  /* @Query(() => [Permission], { name: 'permissions' })
-  findAll() {
-    return this.permissionsService.findAll();
+  @Get()
+  @ResponseMessage("Fetch permissions with paginate")
+  findAll(
+    @Args("current") currentPage: string,
+    @Args("pageSize") limit: string,
+    @Args() qs: string
+  ) {
+    return this.permissionsService.findAll(+currentPage, +limit, qs);
   }
 
-  @Query(() => Permission, { name: 'permission' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  /* @Get(':id')
+  @ResponseMessage("Fetch a permission by id")
+  findOne(@Param('id') id: string) {
     return this.permissionsService.findOne(id);
   }
 
-  @Mutation(() => Permission)
-  updatePermission(@Args('updatePermissionInput') updatePermissionInput: UpdatePermissionInput) {
-    return this.permissionsService.update(updatePermissionInput.id, updatePermissionInput);
+  @Patch(':id')
+  @ResponseMessage("Update a permission")
+  update(@Param('id') id: string, @Body() updatePermissionDto: UpdatePermissionDto, @User() user: IUser) {
+    return this.permissionsService.update(id, updatePermissionDto, user);
   }
 
-  @Mutation(() => Permission)
-  removePermission(@Args('id', { type: () => Int }) id: number) {
-    return this.permissionsService.remove(id);
+  @Delete(':id')
+  @ResponseMessage("Delete a permission")
+  remove(@Param('id') id: string, @User() user: IUser) {
+    return this.permissionsService.remove(id, user);
   } */
 }

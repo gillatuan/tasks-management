@@ -73,7 +73,6 @@ type UserType {
   email: String!
   id: String!
   isActive: Boolean!
-  password: String!
   phone: String!
   role: String!
 }

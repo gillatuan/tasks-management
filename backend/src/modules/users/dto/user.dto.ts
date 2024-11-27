@@ -22,10 +22,6 @@ export class UserType {
   id: string;
 
   @Field()
-  @IsOptional()
-  password?: string;
-
-  @Field()
   @IsNotEmpty({ message: 'Email ko de trong' })
   @IsEmail({}, { message: 'Email ko dung dinh dang' })
   email: string;
