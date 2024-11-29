@@ -1,6 +1,7 @@
-import { Public } from "@/helpers/setPubicPage";
+import { Public } from '@/helpers/setPubicPage';
 import {
   FilterDto,
+  FindAllType,
   RegisterUserInput,
   UpdateUserInput,
   UserType,
@@ -24,9 +25,13 @@ export class UsersResolver {
     return await this.usersService.findOne(id);
   }
 
-  @Query(() => [UserType])
-  async findAll(): Promise<User[]> {
-    return await this.usersService.findAll();
+  @Query(() => FindAllType<UserType>)
+  findAll(
+    @Args('current') current: string,
+    @Args('limit') limit: string,
+    @Args('qs') qs: string,
+  ): Promise<FindAllType<UserType | null>> {
+    return this.usersService.findAll(qs);
   }
 
   @Query(() => [UserType])

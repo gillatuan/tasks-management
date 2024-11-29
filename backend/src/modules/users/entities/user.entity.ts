@@ -1,4 +1,4 @@
-import { BaseEntity } from '@/modules/base.entity';
+import { BaseEntity } from '@/modules/base/base.entity';
 import { Column, Entity, ObjectId, ObjectIdColumn } from 'typeorm';
 import { RoleEnum } from '../dto/user.dto';
 
@@ -25,7 +25,7 @@ export class User extends BaseEntity {
   @Column()
   avatar: string;
 
-  @Column({ default: RoleEnum.Member })
+  @Column()
   role: RoleEnum;
 
   @Column({ default: false })

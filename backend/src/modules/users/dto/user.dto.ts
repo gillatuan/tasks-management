@@ -1,4 +1,5 @@
 // user.dto.ts
+import { PaginationDto } from "@/modules/base/dto/pagination.dto";
 import {
   ArgsType,
   Field,
@@ -8,6 +9,9 @@ import {
 } from '@nestjs/graphql';
 import { Prop } from "@nestjs/mongoose";
 import { IsEmail, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
+import { User } from "../entities/user.entity";
+import { Type } from "class-transformer";
+import { isAbstractType } from "graphql";
 
 export enum RoleEnum {
   Admin = 'Admin',
@@ -42,8 +46,9 @@ export class UserType {
   role?: RoleEnum;
 
   @Field({ defaultValue: false })
-  isActive: boolean;
+  isActive?: boolean;
 }
+
 
 @InputType()
 @ArgsType()
@@ -77,4 +82,13 @@ export class FilterDto {
   @Field({ nullable: true })
   @IsOptional()
   s: string;
+}
+
+@ObjectType()
+export class FindAllType<T> {
+  @Field(() => Array)
+  result: T[];
+
+  @Field(() => PaginationDto)
+  meta: PaginationDto | null;
 }

@@ -21,6 +21,11 @@ input FilterDto {
   s: String
 }
 
+type FindAllType {
+  meta: PaginationDto!
+  result: [UserType!]!
+}
+
 type JWTAccessToken {
   accessToken: String!
   user: UserPayload!
@@ -40,6 +45,13 @@ type Mutation {
   updateUser(id: String!, password: String!): String!
 }
 
+type PaginationDto {
+  current: Float!
+  pageSize: Float!
+  pages: Float!
+  total: Float!
+}
+
 type PermissionType {
   apiPath: String!
   method: String!
@@ -48,7 +60,7 @@ type PermissionType {
 }
 
 type Query {
-  findAll: [UserType!]!
+  findAll(current: String!, limit: String!, qs: String!): FindAllType
   findByEmail(email: String!): UserType!
   findOne(id: String!): UserType!
   helloo: String!

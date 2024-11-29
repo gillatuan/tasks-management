@@ -1,4 +1,5 @@
 import { AuthRegisterInput } from '@/auth/dto/auth.dto';
+import { paginate } from '@/helpers/pagination.util';
 import { setHashPassword } from '@/helpers/utils';
 import {
   BadRequestException,
@@ -6,12 +7,12 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { IsUUID, isUUID } from 'class-validator';
+import { isUUID } from 'class-validator';
 import { MongoRepository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
-import { FilterDto, RoleEnum, UpdateUserInput } from './dto/user.dto';
+import { FilterDto, RoleEnum, UpdateUserInput, UserType } from './dto/user.dto';
 import { User } from './entities/user.entity';
-import mongoose from "mongoose";
+import parseQuery from 'api-query-params'
 
 @Injectable()
 export class UsersService {
@@ -59,9 +60,49 @@ export class UsersService {
     );
   };
 
-  findAll() {
-    return this.userRepository.find();
+  async findAll(query: string, currentPage: number = 1, limit: number = 10) {
+    const { filter, sort, population } = parseQuery(query);
+    delete filter.current;
+    delete filter.pageSize;
+
+    let offset = (+currentPage - 1) * limit;
+
+    const [data, total] = await this.userRepository.findAndCount({
+      where: filter,
+      skip: offset,
+      take: limit,
+      order: sort,
+      select: { password: false },
+    });
+
+    const totalItems = total;
+    const totalPages = Math.ceil(totalItems / limit);
+    const userType: UserType[] = data.map((user, index) => {
+      return {
+        id: user.id,
+        email: user.email,
+        phone: user.phone,
+        address: user.address,
+        avatar: user.avatar,
+        role: user.role,
+        isActive: user.isActive,
+      };
+    });
+
+    return {
+      meta: {
+        currentPage: offset, //trang hiện tại
+        pageSize: limit, //số lượng bản ghi đã lấy
+        total: totalItems, //tổng số trang với điều kiện query
+        totalPages: totalPages, // tổng số phần tử (số bản ghi)
+      },
+      result: userType, //kết quả query
+    };
   }
+
+  /* async findAll(query: string) {
+    return await paginate(this.userRepository, query)
+  } */
 
   async findOne(id: string) {
     if (!isUUID(id)) {
