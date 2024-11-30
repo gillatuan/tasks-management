@@ -1,5 +1,5 @@
 // user.dto.ts
-import { PaginationDto } from "@/modules/base/dto/pagination.dto";
+import { PaginationDto } from '@/modules/base/dto/pagination.dto';
 import {
   ArgsType,
   Field,
@@ -7,12 +7,7 @@ import {
   ObjectType,
   OmitType,
 } from '@nestjs/graphql';
-import { Prop } from "@nestjs/mongoose";
 import { IsEmail, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
-import { User } from "../entities/user.entity";
-import { Type } from "class-transformer";
-import { isAbstractType } from "graphql";
-import { PaginationResponse } from "@/modules/base/dto/pagination.response";
 
 export enum RoleEnum {
   Admin = 'Admin',
@@ -50,29 +45,6 @@ export class UserType {
   isActive?: boolean;
 }
 
-
-@InputType()
-@ArgsType()
-export class RegisterUserInput extends OmitType(UserType, ['avatar']) {
-  @Field()
-  @IsNotEmpty()
-  password: string;
-
-  @Field()
-  avatar?: string;
-
-  @Field()
-  role?: RoleEnum.Member;
-}
-
-@InputType()
-@ArgsType()
-export class UpdateUserInput extends OmitType(UserType, ['role']) {
-  @Field()
-  @IsNotEmpty()
-  password: string;
-}
-
 @InputType()
 @ArgsType()
 export class FilterDto {
@@ -87,7 +59,7 @@ export class FilterDto {
 
 @ObjectType()
 export class UserPaginationResponse {
-  @Field(() => [UserType], {nullable: true})
+  @Field(() => [UserType], { nullable: true })
   @IsOptional()
   result: UserType[];
 

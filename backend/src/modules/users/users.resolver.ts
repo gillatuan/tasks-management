@@ -1,15 +1,14 @@
 import { Public } from '@/helpers/setPubicPage';
 import {
   FilterDto,
-  RegisterUserInput,
-  UpdateUserInput,
   UserPaginationResponse,
   UserType,
 } from '@/modules/users/dto/user.dto';
 import { User } from '@/modules/users/entities/user.entity';
 import { UsersService } from '@/modules/users/users.service';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { PaginationResponse } from '../base/dto/pagination.response';
+import { RegisterUserInput } from './dto/create-user.input';
+import { UpdateUserInput } from './dto/update-user.input';
 
 @Resolver(() => UserType)
 export class UsersResolver {

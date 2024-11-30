@@ -7,13 +7,13 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import parseQuery from 'api-query-params';
 import { isUUID } from 'class-validator';
 import { MongoRepository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
-import { FilterDto, RoleEnum, UpdateUserInput, UserType } from './dto/user.dto';
+import { UpdateUserInput } from './dto/update-user.input';
+import { FilterDto, RoleEnum } from './dto/user.dto';
 import { User } from './entities/user.entity';
-import parseQuery from 'api-query-params'
-import { PaginationInput } from "../base/dto/pagination.input";
 
 @Injectable()
 export class UsersService {
@@ -71,11 +71,18 @@ export class UsersService {
       skip: offset,
       take: limit,
       order: sort,
-      select: { password: false, id: true, email: true, phone: true, address: true, avatar: true, role: true },
+      select: {
+        password: false,
+        id: true,
+        email: true,
+        phone: true,
+        address: true,
+        avatar: true,
+        role: true,
+      },
     });
-    
 
-    return paginate(data, total, limit, offset)
+    return paginate(data, total, limit, offset);
   }
 
   /* async findAll(query: string): Promise<UserPaginationResponse> {
@@ -90,7 +97,7 @@ export class UsersService {
     return await this.userRepository.findOneBy({
       where: { id },
       select: { password: false },
-    })
+    });
   }
 
   async findByEmail(email: string) {

@@ -37,7 +37,7 @@ type Mutation {
   login(loginInput: LoginInput!): JWTAccessToken!
   register(registerUserInput: RegisterUserInput!): UserType!
   removeUser(id: String!): String!
-  updateUser(id: String!, password: String!): String!
+  updateUser(id: String!): String!
 }
 
 type PaginationDto {
@@ -65,7 +65,7 @@ type Query {
 input RegisterUserInput {
   avatar: String!
   password: String!
-  role: String!
+  role: String! = "Member"
 }
 
 type UserPaginationResponse {
