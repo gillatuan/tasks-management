@@ -21,11 +21,6 @@ input FilterDto {
   s: String
 }
 
-type FindAllType {
-  meta: PaginationDto!
-  result: [UserType!]!
-}
-
 type JWTAccessToken {
   accessToken: String!
   user: UserPayload!
@@ -46,10 +41,10 @@ type Mutation {
 }
 
 type PaginationDto {
-  current: Float!
-  pageSize: Float!
-  pages: Float!
-  total: Float!
+  page: Int!
+  pageSize: Int!
+  total: Int!
+  totalPages: Int!
 }
 
 type PermissionType {
@@ -60,7 +55,7 @@ type PermissionType {
 }
 
 type Query {
-  findAll(current: String!, limit: String!, qs: String!): FindAllType
+  findAll(limit: Float, page: Float, qs: String): UserPaginationResponse!
   findByEmail(email: String!): UserType!
   findOne(id: String!): UserType!
   helloo: String!
@@ -71,6 +66,11 @@ input RegisterUserInput {
   avatar: String!
   password: String!
   role: String!
+}
+
+type UserPaginationResponse {
+  meta: PaginationDto!
+  result: [UserType!]
 }
 
 type UserPayload {

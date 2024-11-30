@@ -1,11 +1,12 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { PaginationDto } from "./pagination.dto";
+import { Field, ObjectType } from '@nestjs/graphql';
+import { PaginationDto } from './pagination.dto';
+import { IsOptional } from "class-validator";
 
-@ObjectType()
+@ObjectType({ isAbstract: true })
 export class PaginationResponse<T> {
-  @Field(() => [Object])
-  result: T[]; // The list of items in the current page
+  @Field()
+  result: T[];
 
-  @Field(() => Object)
+  @Field()
   meta: PaginationDto;
 }

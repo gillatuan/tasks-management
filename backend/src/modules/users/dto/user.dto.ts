@@ -12,6 +12,7 @@ import { IsEmail, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
 import { User } from "../entities/user.entity";
 import { Type } from "class-transformer";
 import { isAbstractType } from "graphql";
+import { PaginationResponse } from "@/modules/base/dto/pagination.response";
 
 export enum RoleEnum {
   Admin = 'Admin',
@@ -85,10 +86,11 @@ export class FilterDto {
 }
 
 @ObjectType()
-export class FindAllType<T> {
-  @Field(() => Array)
-  result: T[];
+export class UserPaginationResponse {
+  @Field(() => [UserType], {nullable: true})
+  @IsOptional()
+  result: UserType[];
 
-  @Field(() => PaginationDto)
-  meta: PaginationDto | null;
+  @Field()
+  meta: PaginationDto;
 }

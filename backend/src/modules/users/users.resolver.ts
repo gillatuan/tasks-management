@@ -1,14 +1,15 @@
 import { Public } from '@/helpers/setPubicPage';
 import {
   FilterDto,
-  FindAllType,
   RegisterUserInput,
   UpdateUserInput,
+  UserPaginationResponse,
   UserType,
 } from '@/modules/users/dto/user.dto';
 import { User } from '@/modules/users/entities/user.entity';
 import { UsersService } from '@/modules/users/users.service';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { PaginationResponse } from '../base/dto/pagination.response';
 
 @Resolver(() => UserType)
 export class UsersResolver {
@@ -21,17 +22,17 @@ export class UsersResolver {
   }
 
   @Query(() => UserType)
-  async findOne(@Args('id') id: string): Promise<User | string> {
-    return await this.usersService.findOne(id);
+  findOne(@Args('id') id: string): Promise<User | string> {
+    return this.usersService.findOne(id);
   }
 
-  @Query(() => FindAllType<UserType>)
+  @Query(() => UserPaginationResponse, { name: 'findAll' })
   findAll(
-    @Args('current') current: string,
-    @Args('limit') limit: string,
-    @Args('qs') qs: string,
-  ): Promise<FindAllType<UserType | null>> {
-    return this.usersService.findAll(qs);
+    @Args('qs', { nullable: true }) qs: string,
+    @Args('page', { nullable: true }) page?: number,
+    @Args('limit', { nullable: true }) limit?: number,
+  ): Promise<UserPaginationResponse> {
+    return this.usersService.findAll(qs, page, limit);
   }
 
   @Query(() => [UserType])

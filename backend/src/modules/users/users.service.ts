@@ -13,6 +13,7 @@ import { v4 as uuid } from 'uuid';
 import { FilterDto, RoleEnum, UpdateUserInput, UserType } from './dto/user.dto';
 import { User } from './entities/user.entity';
 import parseQuery from 'api-query-params'
+import { PaginationInput } from "../base/dto/pagination.input";
 
 @Injectable()
 export class UsersService {
@@ -60,47 +61,24 @@ export class UsersService {
     );
   };
 
-  async findAll(query: string, currentPage: number = 1, limit: number = 10) {
-    const { filter, sort, population } = parseQuery(query);
-    delete filter.current;
-    delete filter.pageSize;
-
-    let offset = (+currentPage - 1) * limit;
+  async findAll(query: string, page: number = 1, limit: number = 10) {
+    // Parse the query using api-query-params
+    const { filter, sort, population, projection } = parseQuery(query);
+    const offset = (+page - 1) * limit;
 
     const [data, total] = await this.userRepository.findAndCount({
       where: filter,
       skip: offset,
       take: limit,
       order: sort,
-      select: { password: false },
+      select: { password: false, id: true, email: true, phone: true, address: true, avatar: true, role: true },
     });
+    
 
-    const totalItems = total;
-    const totalPages = Math.ceil(totalItems / limit);
-    const userType: UserType[] = data.map((user, index) => {
-      return {
-        id: user.id,
-        email: user.email,
-        phone: user.phone,
-        address: user.address,
-        avatar: user.avatar,
-        role: user.role,
-        isActive: user.isActive,
-      };
-    });
-
-    return {
-      meta: {
-        currentPage: offset, //trang hiện tại
-        pageSize: limit, //số lượng bản ghi đã lấy
-        total: totalItems, //tổng số trang với điều kiện query
-        totalPages: totalPages, // tổng số phần tử (số bản ghi)
-      },
-      result: userType, //kết quả query
-    };
+    return paginate(data, total, limit, offset)
   }
 
-  /* async findAll(query: string) {
+  /* async findAll(query: string): Promise<UserPaginationResponse> {
     return await paginate(this.userRepository, query)
   } */
 
