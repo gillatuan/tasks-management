@@ -43,7 +43,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
 
     try {
       const payload = await this.jwtService.verifyAsync(token, {
-        secret: process.env.ACCESS_TOKEN_KEY,
+        secret: process.env.JWT_ACCESS_TOKEN_KEY,
       });
       const user = await this.userService.findOne(payload.id);
       ctx.getContext().req.user_data = user;
