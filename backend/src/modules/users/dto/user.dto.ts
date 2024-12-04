@@ -1,12 +1,7 @@
 // user.dto.ts
+import { BaseEntity } from '@/modules/base/base.entity';
 import { PaginationDto } from '@/modules/base/dto/pagination.dto';
-import {
-  ArgsType,
-  Field,
-  InputType,
-  ObjectType,
-  OmitType,
-} from '@nestjs/graphql';
+import { ArgsType, Field, InputType, ObjectType } from '@nestjs/graphql';
 import { IsEmail, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
 
 export enum RoleEnum {
@@ -16,7 +11,7 @@ export enum RoleEnum {
 
 @ObjectType()
 @ArgsType()
-export class UserType {
+export class UserType extends BaseEntity {
   @Field()
   @IsUUID()
   id: string;

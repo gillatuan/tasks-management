@@ -106,32 +106,38 @@ export class UsersService {
   async updateUser(id: string, updateUserInput: UpdateUserInput) {
     const checkExistUser = this.userRepository.findOneBy({ id });
     if (!checkExistUser) {
-      throw new NotFoundException('Khong ton tai use nay');
+      throw new NotFoundException('Khong ton tai user nay');
     }
-    const getHashPassword = await setHashPassword(updateUserInput.password);
-    await this.userRepository.update(
-      { id },
-      { ...updateUserInput, password: getHashPassword },
-    );
+
+    if (updateUserInput.password) {
+      const getHashPassword = await setHashPassword(updateUserInput.password);
+      updateUserInput.password = getHashPassword;
+    }
+    await this.userRepository.update({ id }, { ...updateUserInput });
 
     return 'Update user OK';
   }
 
   async remove(id: string) {
-    if (isUUID(id)) {
-      const checkUserIsAdmin = await this.userRepository.findOneBy({
-        id,
-        role: RoleEnum.Admin,
-      });
-      if (!checkUserIsAdmin) {
-        const idSlice = id.slice();
-        this.userRepository.delete({ id });
-        return idSlice;
-      }
+    if (!isUUID(id)) {
+      throw new BadRequestException('Id ko dung dinh dang');
+    }
 
+    const checkUserIsAdmin = await this.userRepository.findOneBy({
+      id,
+      role: RoleEnum.Admin,
+    });
+    if (checkUserIsAdmin) {
       throw new BadRequestException('Ban khong co quyen xoa');
     }
-    throw new BadRequestException('Id ko dung dinh dang');
+
+    return this.updateUser(id, {
+      isDeleted: true,
+      deletedBy: {
+        _id: checkUserIsAdmin._id,
+        email: checkUserIsAdmin.email,
+      },
+    });
   }
 
   async searchTerms(filterDto: FilterDto) {
