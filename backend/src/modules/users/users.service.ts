@@ -7,7 +7,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import parseQuery from 'api-query-params';
 import { isUUID } from 'class-validator';
 import { MongoRepository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
@@ -61,28 +60,9 @@ export class UsersService {
     );
   };
 
-  async findAll(query: string, page: number = 1, limit: number = 10) {
-    // Parse the query using api-query-params
-    const { filter, sort, population, projection } = parseQuery(query);
-    const offset = (+page - 1) * limit;
-
-    const [data, total] = await this.userRepository.findAndCount({
-      where: filter,
-      skip: offset,
-      take: limit,
-      order: sort,
-      select: {
-        password: false,
-        id: true,
-        email: true,
-        phone: true,
-        address: true,
-        avatar: true,
-        role: true,
-      },
-    });
-
-    return paginate(data, total, limit, offset);
+  async findAll(query: string, opt?: any, page: number = 1, limit: number = 10) {
+  const skip = (+page - 1) * limit;
+  return paginate<User>(query, opt, limit, skip);
   }
 
   /* async findAll(query: string): Promise<UserPaginationResponse> {
