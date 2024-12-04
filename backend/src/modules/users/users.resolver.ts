@@ -27,7 +27,7 @@ export class UsersResolver {
 
   @Query(() => UserPaginationResponse, { name: 'findAll' })
   findAll(
-    @Args('qs', { nullable: true }) qs: string,
+    @Args('qs', { nullable: true }) qs?: string,
     @Args('page', { nullable: true }) page?: number,
     @Args('limit', { nullable: true }) limit?: number,
   ): Promise<UserPaginationResponse> {
