@@ -7,6 +7,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import aqp from 'api-query-params';
 import { isUUID } from 'class-validator';
 import { MongoRepository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
@@ -60,9 +61,11 @@ export class UsersService {
     );
   };
 
-  async findAll(query: string, opt?: any, page: number = 1, limit: number = 10) {
-  const skip = (+page - 1) * limit;
-  return paginate<User>(query, opt, limit, skip);
+  async findAll(query: string, opt?: any, page: number = 1) {
+    const { filter, limit, sort } = aqp(query, opt);
+    const skip = (+page - 1) * limit;
+
+    return paginate<User>(this.userRepository, filter, sort, limit, page, skip);
   }
 
   /* async findAll(query: string): Promise<UserPaginationResponse> {
@@ -121,20 +124,6 @@ export class UsersService {
   }
 
   async searchTerms(filterDto: FilterDto) {
-    const { isActive, s } = filterDto;
-
-    if (isActive) {
-      return await this.userRepository.findBy({ isActive });
-    }
-
-    if (s) {
-      return await this.userRepository.find({
-        where: {
-          email: { $regex: new RegExp(s, 'i') }, // Case-insensitive substring match
-        },
-      });
-    }
-
-    return await this.userRepository.find();
+    return this.findAll(filterDto.s);
   }
 }

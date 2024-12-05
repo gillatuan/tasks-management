@@ -45,10 +45,6 @@ export class UserType extends BaseEntity {
 export class FilterDto {
   @Field({ nullable: true })
   @IsOptional()
-  isActive: boolean;
-
-  @Field({ nullable: true })
-  @IsOptional()
   s: string;
 }
 

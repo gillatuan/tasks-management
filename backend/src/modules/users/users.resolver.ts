@@ -9,6 +9,7 @@ import { UsersService } from '@/modules/users/users.service';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { RegisterUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
+import { PaginationResponse } from "../base/dto/pagination.response";
 
 @Resolver(() => UserType)
 export class UsersResolver {
@@ -35,7 +36,7 @@ export class UsersResolver {
   }
 
   @Query(() => [UserType])
-  async searchTerms(@Args('filterDto') filterDto: FilterDto): Promise<User[]> {
+  async searchTerms(@Args('filterDto') filterDto: FilterDto): Promise<PaginationResponse<User>> {
     return await this.usersService.searchTerms(filterDto);
   }
 

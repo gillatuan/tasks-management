@@ -1,29 +1,20 @@
 import { PaginationResponse } from '@/modules/base/dto/pagination.response';
 import aqp from 'api-query-params';
+import { FindOptionsOrder, FindOptionsRelations, FindOptionsSelect, Repository } from 'typeorm';
 
 export async function paginate<T>(
-  query: string,
-  opt: Object,
+  repository: Repository<T>,
+  filter: Record<string, any>,
+  sort: FindOptionsOrder<T>,
   limit: number = 10,
+  page: number = 1,
   skip: number = 0,
 ): Promise<PaginationResponse<T>> {
-  const { filter, sort } = aqp(query, opt);
-  const page = Math.floor(skip / limit) + 1;
-
-  const [data, total] = await this.userRepository.findAndCount({
+  const [data, total] = await repository.findAndCount({
     where: filter,
     skip,
     take: limit,
     order: sort,
-    select: {
-      password: false,
-      id: true,
-      email: true,
-      phone: true,
-      address: true,
-      avatar: true,
-      role: true,
-    },
   });
 
   const totalPages = Math.ceil(total / limit);
