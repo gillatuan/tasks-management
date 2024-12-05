@@ -1,5 +1,5 @@
 // user.dto.ts
-import { BaseEntity } from '@/modules/base/base.entity';
+import { BaseEntity } from '@/modules/base/entity/base.entity';
 import { PaginationDto } from '@/modules/base/dto/pagination.dto';
 import { ArgsType, Field, InputType, ObjectType } from '@nestjs/graphql';
 import { IsEmail, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';

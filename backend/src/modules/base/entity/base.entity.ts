@@ -5,11 +5,15 @@ export class BaseEntity {
   id: string; // Sau này sẽ dùng với class-transformer để serialize dữ liệu response
 
   @Column()
+  createdAt: Date;
+  @Column()
   createdBy: {
     _id: ObjectId;
     email: string;
   };
 
+  @Column()
+  updatedAt: Date;
   @Column()
   updatedBy: {
     _id: ObjectId;
@@ -17,23 +21,12 @@ export class BaseEntity {
   };
 
   @Column()
+  isDeleted: boolean;
+  @Column()
   deletedBy: {
     _id: ObjectId;
     email: string;
   };
-
-  @Column()
-  createdAt: Date;
-
-  @Column()
-  updatedAt: Date;
-
-  @Column()
-  isDeleted: boolean;
-
-  @Column()
-  deletedAt: Date;
-
   @Column({ default: null })
-  deleted_at: Date; // Dùng cho soft delete
+  deletedAt: Date;
 }
