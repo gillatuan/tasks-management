@@ -50,7 +50,7 @@ export class FilterDto {
 
 @ObjectType()
 export class UserPaginationResponse {
-  @Field(() => [UserType], { nullable: true })
+  @Field(() => [UserType])
   @IsOptional()
   result: UserType[];
 
