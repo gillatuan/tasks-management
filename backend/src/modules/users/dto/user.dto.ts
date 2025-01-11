@@ -43,7 +43,7 @@ export class UserType extends BaseEntity {
 @InputType()
 @ArgsType()
 export class FilterDto {
-  @Field({ nullable: true })
+  @Field()
   @IsOptional()
   s: string;
 }
@@ -51,7 +51,6 @@ export class FilterDto {
 @ObjectType()
 export class UserPaginationResponse {
   @Field(() => [UserType])
-  @IsOptional()
   result: UserType[];
 
   @Field()

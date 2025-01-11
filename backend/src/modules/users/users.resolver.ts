@@ -36,8 +36,8 @@ export class UsersResolver {
   }
 
   @Query(() => [UserType])
-  async searchTerms(@Args('filterDto') filterDto: FilterDto): Promise<PaginationResponse<User>> {
-    return await this.usersService.searchTerms(filterDto);
+  searchTerms(@Args('filterDto') filterDto: FilterDto): Promise<PaginationResponse<User>> {
+    return this.usersService.searchTerms(filterDto);
   }
 
   @Query(() => UserType)

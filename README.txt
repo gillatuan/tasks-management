@@ -45,11 +45,15 @@ mutation {
   }
 }
 
-query ListUsers {
-  findAll {
-    id
-   	email
-    phone
+query FindAll($qs: String, $currentPage: Float, $limit: Float) {
+  findAll(qs: $qs, page:$currentPage, limit: $limit) {
+    result {
+      email
+    }
+    meta {
+      pageSize
+      totalPages
+    }
   }
 }
 

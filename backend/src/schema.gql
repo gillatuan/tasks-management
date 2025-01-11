@@ -17,7 +17,7 @@ input CreatePermissionInput {
 }
 
 input FilterDto {
-  s: String
+  s: String!
 }
 
 type JWTAccessToken {

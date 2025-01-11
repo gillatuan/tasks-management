@@ -68,10 +68,6 @@ export class UsersService {
     return paginate<User>(this.userRepository, filter, sort, limit, page, skip);
   }
 
-  /* async findAll(query: string): Promise<UserPaginationResponse> {
-    return await paginate(this.userRepository, query)
-  } */
-
   async findOne(id: string) {
     if (!isUUID(id)) {
       return `not found user`;
