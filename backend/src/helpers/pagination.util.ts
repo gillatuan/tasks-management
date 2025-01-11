@@ -7,7 +7,6 @@ export async function paginate<T>(
   filter: Record<string, any>,
   sort: FindOptionsOrder<T>,
   limit: number = 10,
-  page: number = 1,
   skip: number = 0,
 ): Promise<PaginationResponse<T>> {
   const [data, total] = await repository.findAndCount({
@@ -18,6 +17,8 @@ export async function paginate<T>(
   });
 
   const totalPages = Math.ceil(total / limit);
+  const page = (skip / limit) + 1;
+  
   // Parse the query using api-query-params
 
   return {

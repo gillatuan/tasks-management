@@ -32,7 +32,7 @@ export class UsersResolver {
     @Args('page', { nullable: true }) page?: number,
     @Args('limit', { nullable: true }) limit?: number,
   ): Promise<UserPaginationResponse> {
-    return this.usersService.findAll(qs, page, limit);
+    return this.usersService.findAll(qs);
   }
 
   @Query(() => [UserType])

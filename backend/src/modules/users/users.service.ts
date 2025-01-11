@@ -61,11 +61,10 @@ export class UsersService {
     );
   };
 
-  async findAll(query: string, opt?: any, page: number = 1) {
-    const { filter, limit, sort } = aqp(query, opt);
-    const skip = (+page - 1) * limit;
+  async findAll(query: string, opt?: any) {
+    const { filter, limit, sort, skip } = aqp(query, opt);
 
-    return paginate<User>(this.userRepository, filter, sort, limit, page, skip);
+    return paginate<User>(this.userRepository, filter, sort, limit, skip);
   }
 
   async findOne(id: string) {
