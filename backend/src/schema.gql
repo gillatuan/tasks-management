@@ -40,9 +40,9 @@ type Mutation {
 }
 
 type PaginationDto {
-  page: Int!
+  currentPage: Int!
   pageSize: Int!
-  total: Int!
+  totalItems: Int!
   totalPages: Int!
 }
 
@@ -54,7 +54,7 @@ type PermissionType {
 }
 
 type Query {
-  findAll(limit: Float, page: Float, qs: String): UserPaginationResponse!
+  findAll(qs: String): UserPaginationResponse!
   findByEmail(email: String!): UserType!
   findOne(id: String!): UserType!
   helloo: String!

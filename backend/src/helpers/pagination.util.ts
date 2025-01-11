@@ -17,17 +17,17 @@ export async function paginate<T>(
   });
 
   const totalPages = Math.ceil(total / limit);
-  const page = (skip / limit) + 1;
+  const currentPage = skip % limit + 1;
   
   // Parse the query using api-query-params
 
   return {
     result: data,
     meta: {
-      page, //trang hiện tại
+      currentPage, //trang hiện tại
       pageSize: limit, //số lượng bản ghi đã lấy
-      totalPages: totalPages, //tổng số trang với điều kiện query
-      total,
+      totalPages, //tổng số trang với điều kiện query
+      totalItems: total,
     },
   };
 }

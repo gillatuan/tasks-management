@@ -7,10 +7,10 @@ export class PaginationDto {
   pageSize: number;
 
   @Field(() => Int)
-  total: number;
+  totalItems: number;
 
   @Field(() => Int)
-  page: number; // Current page number
+  currentPage: number; // Current page number
 
   @Field(() => Int)
   totalPages: number; // Total number of pages
